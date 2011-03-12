@@ -1,32 +1,41 @@
 <?php
-
-/***************************************************************
- *  Copyright notice
+/**
+ * Copyright notice
  *
- *  (c) 2013 CERDAN Yohann <cerdanyohann@yahoo.fr>
- *  All rights reserved
+ *       (c) 2011  <>
+ *       All rights reserved
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
+ *       This script is part of the TYPO3 project. The TYPO3 project is
+ *       free software; you can redistribute it and/or modify
+ *       it under the terms of the GNU General Public License as published by
+ *       the Free Software Foundation; either version 2 of the License, or
+ *       (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ *       The GNU General Public License can be found at
+ *       http://www.gnu.org/copyleft/gpl.html.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *       This script is distributed in the hope that it will be useful,
+ *       but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *       GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ *       This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 $LANG->includeLLFile('EXT:typo3profiler/mod1/locallang.xml');
 require_once(PATH_t3lib . 'class.t3lib_scbase.php');
+require_once(PATH_typo3 . 'class.db_list.inc');
+require_once(PATH_typo3 . 'class.db_list_extra.inc');
+require_once(PATH_typo3 . 'sysext/cms/layout/class.tx_cms_layout.php');
 $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the users has no permission for entry.
-
+// DEFAULT initialization of a module [END]
+/**
+ * Module 'Données' for the 'typo3profiler' extension.
+ *
+ * @author <>
+ * @package TYPO3
+ * @subpackage tx_typo3profiler
+ */
 class tx_typo3profiler_module1 extends t3lib_SCbase
 {
 	public $pageinfo;
@@ -40,15 +49,16 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 	 * @return void
 	 */
 
-	function init() {
+	function init()
+	{
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 		// Check nb per page
 		$nbPerPage = t3lib_div::_GP('nbPerPage');
-		if ($nbPerPage !== NULL) {
+		if ($nbPerPage !== null) {
 			$this->nbElementsPerPage = $nbPerPage;
 		}
 		$flush = t3lib_div::_GP('flush');
-		if ($flush !== NULL) {
+		if ($flush !== null) {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_typo3profiler_page', '');
 		}
 		parent::init();
@@ -58,12 +68,14 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 	 * Main function of the module. Write the content to $this->content
 	 * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
 	 *
-	 * @return [type]        ...
+	 * @return [type]		...
 	 */
-	function main() {
+	function main()
+	{
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 		// Draw the header.
 		$this->doc = t3lib_div::makeInstance('bigDoc');
+		$this->doc->styleSheetFile2 = '../typo3conf/ext/typo3profiler/lib/module.css';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form = '<form action="" method="post" enctype="multipart/form-data">';
 		// JavaScript
@@ -85,9 +97,7 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 
 		$this->content .= $this->doc->startPage($LANG->getLL('title'));
 
-		$this->content .= '<table width="100%"><tr><td class="functitle" width="50%">' . $LANG->getLL('choose'
-		) . '</td><td align="right" width="50%"><input type="button" onclick="jumpToUrl(\'' . t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR'
-		) . 'mod.php?M=txtypo3profilerM1_page&flush=true\');" value="' . $GLOBALS['LANG']->getLL('flush') . '"/></td></tr></table>';
+		$this->content .= '<table width="100%"><tr><td class="functitle" width="50%">' . $LANG->getLL('choose') . '</td><td align="right" width="50%"><input type="button" onclick="jumpToUrl(\'' . t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_page&flush=true\');" value="' . $GLOBALS['LANG']->getLL('flush') . '"/></td></tr></table>';
 
 		$this->content .= $this->doc->divider(5);
 		$this->moduleContent();
@@ -98,7 +108,8 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 	 *
 	 * @return void
 	 */
-	function printContent() {
+	function printContent()
+	{
 		$this->content .= $this->doc->endPage();
 		echo $this->content;
 	}
@@ -108,9 +119,10 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 	 *
 	 * @return void
 	 */
-	function moduleContent() {
+	function moduleContent()
+	{
 		$uid = t3lib_div::_GP('uid');
-		if ($uid !== NULL) {
+		if ($uid !== null) {
 			$query['SELECT'] = 'uid,page,parsetime,size,nocache,userint,nbqueries,logts';
 			$query['FROM'] = 'tx_typo3profiler_page';
 			$query['WHERE'] = 'uid=' . intval($uid);
@@ -122,10 +134,8 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('title', 'pages', 'uid=' . $row['page']);
 			$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_page';
 			$listURL .= '&nbPerPage=' . $this->nbElementsPerPage;
-			$pointer = t3lib_div::_GP('pointer');
-			$listURL .= ($pointer !== NULL) ? '&pointer=' . $pointer : '';
 			$this->content .= '<a href="' . $listURL . '"><img src="/typo3/sysext/t3skin/images/icons/actions/view-go-back.png"/>&nbsp;&nbsp;&nbsp;' . $GLOBALS['LANG']->getLL('back') . '</a>';
-			$this->content .= $this->formatAResult($row, $query['FROM'], $GLOBALS['LANG']->getLL('title')) . '<br/>';
+			$this->content .= $this->formatAResult($row, $query['FROM'], $GLOBALS['LANG']->getLL('title')).'<br/>';
 			$this->content .= $row['logts'];
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		} else {
@@ -141,7 +151,8 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 		}
 	}
 
-	function drawTable($query) {
+	function drawTable($query)
+	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $query['FROM'], $query['WHERE'], $query['GROUPBY'], $query['ORDERBY'], $query['LIMIT']);
 		$listOfUids = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -150,8 +161,8 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 
 		// Page browser
 		$pointer = t3lib_div::_GP('pointer');
-		$limit = ($pointer !== NULL) ? $pointer . ',' . $this->nbElementsPerPage : '0,' . $this->nbElementsPerPage;
-		$current = ($pointer !== NULL) ? intval($pointer) : 0;
+		$limit = ($pointer !== null) ? $pointer . ',' . $this->nbElementsPerPage : '0,' . $this->nbElementsPerPage;
+		$current = ($pointer !== null) ? intval($pointer) : 0;
 		$pageBrowser = $this->renderListNavigation($GLOBALS['TYPO3_DB']->sql_num_rows($res), $this->nbElementsPerPage, $current);
 		$query['WHERE'] .= ' AND uid IN (' . implode(',', $listOfUids) . ')';
 		$query['LIMIT'] = $limit;
@@ -164,11 +175,12 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 		}
 
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-
+		
 		return $content;
 	}
 
-	function formatAResult($row, $table, $title) {
+	function formatAResult($row, $table, $title)
+	{
 		$content = '';
 		$content .= '<table cellspacing="1" cellpadding="2" border="0" class="typo3-dblist">';
 		$content .= '<tr class="t3-row-header"><td colspan="10">';
@@ -197,7 +209,8 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 		return $content;
 	}
 
-	function formatAllResults($res, $table, $title) {
+	function formatAllResults($res, $table, $title)
+	{
 		$content = '';
 
 		$content .= '<table cellspacing="1" cellpadding="2" border="0" class="typo3-dblist">';
@@ -217,8 +230,6 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 
 		$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_page';
 		$listURL .= '&nbPerPage=' . $this->nbElementsPerPage;
-		$pointer = t3lib_div::_GP('pointer');
-		$listURL .= ($pointer !== NULL) ? '&pointer=' . $pointer : '';
 
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$content .= '<tr class="db_list_normal">';
@@ -230,8 +241,7 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 			$content .= '<td class="cell" align="center">' . $row['nocache'] . '</td>';
 			$content .= '<td class="cell" align="center">' . $row['userint'] . '</td>';
 			$content .= '<td class="cell" align="center">' . $row['nbqueries'] . '</td>';
-			$content .= '<td class="cell" align="center" valign="middle"><a href="' . $listURL . '&uid=' . $row['uid'] . '"><img src="' . t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR'
-			) . 'sysext/t3skin/icons/gfx/zoom.gif"/></a></td>';
+			$content .= '<td class="cell" align="center" valign="middle"><a href="' . $listURL . '&uid=' . $row['uid'] . '"><img src="' . t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'sysext/t3skin/icons/gfx/zoom.gif"/></a></td>';
 			$content .= '</tr>';
 		}
 		$content .= '</table>';
@@ -245,7 +255,8 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 	 * Creates a page browser for tables with many records
 	 */
 
-	function renderListNavigation($totalItems, $iLimit, $firstElementNumber, $renderPart = 'top') {
+	function renderListNavigation($totalItems, $iLimit, $firstElementNumber, $renderPart = 'top')
+	{
 		$totalPages = ceil($totalItems / $iLimit);
 
 		$content = '';
@@ -287,8 +298,8 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 
 		$pageNumberInput = '<span>' . $currentPage . '</span>';
 		$pageIndicator = '<span class="pageIndicator">'
-			. sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:pageIndicator'), $pageNumberInput, $totalPages)
-			. '</span>';
+		                 . sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:pageIndicator'), $pageNumberInput, $totalPages)
+		                 . '</span>';
 
 		if ($totalItems > ($firstElementNumber + $iLimit)) {
 			$lastElementNumber = $firstElementNumber + $iLimit;
@@ -297,21 +308,21 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 		}
 
 		$rangeIndicator = '<span class="pageIndicator">'
-			. sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:rangeIndicator'), $firstElementNumber + 1, $lastElementNumber)
-			. '</span>';
+		                  . sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:rangeIndicator'), $firstElementNumber + 1, $lastElementNumber)
+		                  . '</span>';
 
 		$reload = '<input type="text" name="nbPerPage" id="nbPerPage" size="5" value="' . $this->nbElementsPerPage . '"/> / page '
-			. '<a href="#"  onClick="jumpToUrl(\'' . $listURLOrig . '&nbPerPage=\'+document.getElementById(\'nbPerPage\').value);">'
-			. '<img width="16" height="16" title="" alt="" src="sysext/t3skin/icons/gfx/refresh_n.gif"></a>';
+		          . '<a href="#"  onClick="jumpToUrl(\'' . $listURLOrig . '&nbPerPage=\'+document.getElementById(\'nbPerPage\').value);">'
+		          . '<img width="16" height="16" title="" alt="" src="sysext/t3skin/icons/gfx/refresh_n.gif"></a>';
 
 		$content .= '<div id="typo3-dblist-pagination">'
-			. $first . $previous
-			. '<span class="bar">&nbsp;</span>'
-			. $rangeIndicator . '<span class="bar">&nbsp;</span>'
-			. $pageIndicator . '<span class="bar">&nbsp;</span>'
-			. $next . $last . '<span class="bar">&nbsp;</span>'
-			. $reload
-			. '</div>';
+		            . $first . $previous
+		            . '<span class="bar">&nbsp;</span>'
+		            . $rangeIndicator . '<span class="bar">&nbsp;</span>'
+		            . $pageIndicator . '<span class="bar">&nbsp;</span>'
+		            . $next . $last . '<span class="bar">&nbsp;</span>'
+		            . $reload
+		            . '</div>';
 
 		$returnContent = $content;
 
