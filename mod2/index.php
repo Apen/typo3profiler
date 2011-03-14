@@ -24,9 +24,6 @@
 
 $LANG->includeLLFile('EXT:typo3profiler/mod2/locallang.xml');
 require_once(PATH_t3lib . 'class.t3lib_scbase.php');
-require_once(PATH_typo3 . 'class.db_list.inc');
-require_once(PATH_typo3 . 'class.db_list_extra.inc');
-require_once(PATH_typo3 . 'sysext/cms/layout/class.tx_cms_layout.php');
 $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the users has no permission for entry.
 // DEFAULT initialization of a module [END]
 /**

@@ -24,9 +24,6 @@
 
 $LANG->includeLLFile('EXT:typo3profiler/mod1/locallang.xml');
 require_once(PATH_t3lib . 'class.t3lib_scbase.php');
-require_once(PATH_typo3 . 'class.db_list.inc');
-require_once(PATH_typo3 . 'class.db_list_extra.inc');
-require_once(PATH_typo3 . 'sysext/cms/layout/class.tx_cms_layout.php');
 $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the users has no permission for entry.
 // DEFAULT initialization of a module [END]
 /**
@@ -135,7 +132,7 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 			$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_page';
 			$listURL .= '&nbPerPage=' . $this->nbElementsPerPage;
 			$this->content .= '<a href="' . $listURL . '"><img src="/typo3/sysext/t3skin/images/icons/actions/view-go-back.png"/>&nbsp;&nbsp;&nbsp;' . $GLOBALS['LANG']->getLL('back') . '</a>';
-			$this->content .= $this->formatAResult($row, $query['FROM'], $GLOBALS['LANG']->getLL('title')).'<br/>';
+			$this->content .= $this->formatAResult($row, $query['FROM'], $GLOBALS['LANG']->getLL('title')) . '<br/>';
 			$this->content .= $row['logts'];
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		} else {
@@ -175,7 +172,7 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 		}
 
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		
+
 		return $content;
 	}
 
