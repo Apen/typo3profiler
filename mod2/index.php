@@ -177,7 +177,7 @@ class tx_typo3profiler_module2 extends t3lib_SCbase
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$content .= '<tr class="db_list_normal">';
 			$content .= '<td class="cell">' . $row['type'] . '</td>';
-			$content .= '<td class="cell" title="' . htmlentities($row['query']) . '">' . htmlentities(t3lib_div::fixed_lgd($row['query'], 100)) . '</td>';
+			$content .= '<td class="cell" title="' . htmlentities($row['query']) . '">' . htmlentities(t3lib_div::fixed_lgd_cs($row['query'], 100)) . '</td>';
 			$content .= '<td class="cell">' . $row['time'] . '</td>';
 			$content .= '<td class="cell">' . $row['backtrace'] . '</td>';
 			$content .= '<td class="cell">' . $row['page'] . '</td>';
