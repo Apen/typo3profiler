@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>module</type>
-		<description>Language labels for module &quot;txrecordsmanagerM1&quot;</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="title">Time to execute the queries</label>
-			<label index="choose">Choose an action :</label>
-			<label index="type">Type</label>
-			<label index="query">Query</label>
-			<label index="parsetime">Time (in ms)</label>
-			<label index="call">parent function</label>
-			<label index="pageuid">Page UID</label>
-			<label index="typo3mode">TYPO3 mode</label>
-			<label index="flush">Flush all entries</label>
-		</languageKey>
-		<languageKey index="fr" type="array">
-			<label index="title">Temps de traitement des requêtes</label>
-			<label index="choose">Choisir une action :</label>
-			<label index="type">Type</label>
-			<label index="query">Requête</label>
-			<label index="parsetime">Temps (en ms)</label>
-			<label index="call">Fonction parente</label>
-			<label index="pageuid">Page UID</label>
-			<label index="typo3mode">TYPO3 mode</label>
-			<label index="flush">Vider la table</label>
-		</languageKey>
-	</data>
+    <meta type="array">
+        <type>module</type>
+        <description>Language labels for module &quot;txrecordsmanagerM1&quot;</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="title">Time to execute the queries</label>
+            <label index="choose">Choose an action :</label>
+            <label index="type">Type</label>
+            <label index="query">Query</label>
+            <label index="parsetime">Time (in ms)</label>
+            <label index="call">parent function</label>
+            <label index="pageuid">Page UID</label>
+            <label index="typo3mode">TYPO3 mode</label>
+            <label index="flush">Flush all entries</label>
+            <label index="view">Details</label>
+            <label index="back">Back to the list</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="title">Temps de traitement des requêtes</label>
+            <label index="choose">Choisir une action :</label>
+            <label index="type">Type</label>
+            <label index="query">Requête</label>
+            <label index="parsetime">Temps (en ms)</label>
+            <label index="call">Fonction parente</label>
+            <label index="pageuid">Page UID</label>
+            <label index="typo3mode">TYPO3 mode</label>
+            <label index="flush">Vider la table</label>
+            <label index="view">Détails</label>
+            <label index="back">Revenir à la liste</label>
+        </languageKey>
+    </data>
 </T3locallang>

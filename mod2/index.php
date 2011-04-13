@@ -118,15 +118,55 @@ class tx_typo3profiler_module2 extends t3lib_SCbase
 	 */
 	function moduleContent()
 	{
-		$query = array();
-		$query['SELECT'] = 'type,query,time,backtrace,page,typo3mode';
-		$query['FROM'] = 'tx_typo3profiler_sql';
-		$query['WHERE'] = '1=1';
-		$query['GROUPBY'] = '';
-		$query['ORDERBY'] = 'time DESC';
-		$query['LIMIT'] = '';
-		$content = $this->drawTable($query);
-		$this->content .= $content;
+		$uid = t3lib_div::_GP('uid');
+		if ($uid !== null) {
+			$query = array();
+			$query['SELECT'] = 'type,query,time,backtrace,page,typo3mode';
+			$query['FROM'] = 'tx_typo3profiler_sql';
+			$query['WHERE'] = 'uid=' . intval($uid);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($query);
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_sql';
+			$listURL .= '&nbPerPage=' . $this->nbElementsPerPage;
+			$pointer = t3lib_div::_GP('pointer');
+			$listURL .= ($pointer !== null) ? '&pointer=' . $pointer : '';
+			$this->content .= '<a href="' . $listURL . '"><img src="/typo3/sysext/t3skin/images/icons/actions/view-go-back.png"/>&nbsp;&nbsp;&nbsp;' . $GLOBALS['LANG']->getLL('back') . '</a>';
+			$this->content .= $this->formatAResult($row, $query['FROM'], $GLOBALS['LANG']->getLL('title'));
+			$res = $GLOBALS['TYPO3_DB']->sql_query('EXPLAIN ' . $row['query']);
+			$explain = '<table cellspacing="1" cellpadding="2" border="0" class="typo3-dblist">';
+			$explain .= '<tr class="t3-row-header"><td colspan="10">';
+			$explain .= 'EXPLAIN SQL';
+			$explain .= '</td></tr>';
+			$header = true;
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				if ($header === true) {
+					$explain .= '<tr class="c-headLine">';
+					foreach ($row as $field => $value) {
+						$explain .= '<td class="cell">' . $field . '</td>';
+					}
+					$explain .= '</tr>';
+					$header = false;
+				}
+				$explain .= '<tr class="db_list_normal">';
+				foreach ($row as $field => $value) {
+					$explain .= '<td class="cell">' . preg_replace('/(\.|,)/', ' $1 ', $value) . '</td>';
+				}
+				$explain .= '</tr>';
+			}
+			$explain .= '</table>';
+			$this->content .= $explain;
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		} else {
+			$query = array();
+			$query['SELECT'] = 'uid,type,query,time,backtrace,page,typo3mode';
+			$query['FROM'] = 'tx_typo3profiler_sql';
+			$query['WHERE'] = '1=1';
+			$query['GROUPBY'] = '';
+			$query['ORDERBY'] = 'time DESC';
+			$query['LIMIT'] = '';
+			$content = $this->drawTable($query);
+			$this->content .= $content;
+		}
 	}
 
 	function drawTable($query)
@@ -157,6 +197,45 @@ class tx_typo3profiler_module2 extends t3lib_SCbase
 		return $content;
 	}
 
+	function formatAResult($row, $table, $title)
+	{
+		$content = '';
+		$content .= '<table cellspacing="1" cellpadding="2" border="0" class="typo3-dblist">';
+		$content .= '<tr class="t3-row-header"><td colspan="10">';
+		$content .= $title;
+		$content .= '</td></tr>';
+		$content .= '<tr class="c-headLine">';
+		$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('type') . '</td>';
+		$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('parsetime') . '</td>';
+		$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('pageuid') . '</td>';
+		$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('typo3mode') . '</td>';
+		$content .= '</tr>';
+		$content .= '<tr class="db_list_normal">';
+		$content .= '<td class="cell">' . $row['type'] . '</td>';
+		$content .= '<td class="cell">' . $row['time'] . '</td>';
+		$content .= '<td class="cell">' . $row['page'] . '</td>';
+		$content .= '<td class="cell">' . $row['typo3mode'] . '</td>';
+		$content .= '</tr>';
+		$content .= '</table>';
+		$content .= '<table cellspacing="1" cellpadding="2" border="0" class="typo3-dblist">';
+		$content .= '<tr class="t3-row-header"><td colspan="10">';
+		$content .= $GLOBALS['LANG']->getLL('query');
+		$content .= '</td></tr>';
+		$content .= '<tr class="db_list_normal">';
+		$content .= '<td class="cell">' . htmlentities(preg_replace('/,/', ', ', $row['query'])) . '</td>';
+		$content .= '</tr>';
+		$content .= '</table>';
+		$content .= '<table cellspacing="1" cellpadding="2" border="0" class="typo3-dblist">';
+		$content .= '<tr class="t3-row-header"><td colspan="10">';
+		$content .= $GLOBALS['LANG']->getLL('call');
+		$content .= '</td></tr>';
+		$content .= '<tr class="db_list_normal">';
+		$content .= '<td class="cell">' . $row['backtrace'] . '</td>';
+		$content .= '</tr>';
+		$content .= '</table>';
+		return $content;
+	}
+
 	function formatAllResults($res, $table, $title)
 	{
 		$content = '';
@@ -172,7 +251,13 @@ class tx_typo3profiler_module2 extends t3lib_SCbase
 		$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('call') . '</td>';
 		$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('pageuid') . '</td>';
 		$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('typo3mode') . '</td>';
+		$content .= '<td class="cell" align="center">' . $GLOBALS['LANG']->getLL('view') . '</td>';
 		$content .= '</tr>';
+
+		$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_sql';
+		$listURL .= '&nbPerPage=' . $this->nbElementsPerPage;
+		$pointer = t3lib_div::_GP('pointer');
+		$listURL .= ($pointer !== null) ? '&pointer=' . $pointer : '';
 
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$content .= '<tr class="db_list_normal">';
@@ -182,6 +267,7 @@ class tx_typo3profiler_module2 extends t3lib_SCbase
 			$content .= '<td class="cell">' . $row['backtrace'] . '</td>';
 			$content .= '<td class="cell">' . $row['page'] . '</td>';
 			$content .= '<td class="cell">' . $row['typo3mode'] . '</td>';
+			$content .= '<td class="cell" align="center" valign="middle"><a href="' . $listURL . '&uid=' . $row['uid'] . '"><img src="' . t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'sysext/t3skin/icons/gfx/zoom.gif"/></a></td>';
 			$content .= '</tr>';
 		}
 		$content .= '</table>';

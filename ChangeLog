@@ -1,3 +1,6 @@
+2011-04-13 CERDAN Yohann  <cerdanyohann@yahoo.fr>
+    * New feature : display EXPLAIN queries
+    * Some bugfixes
 2011-03-14 CERDAN Yohann  <cerdanyohann@yahoo.fr>
     * Doesn't work on <4.2, add depends information
 2011-03-10 CERDAN Yohann  <cerdanyohann@yahoo.fr>

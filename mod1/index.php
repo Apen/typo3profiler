@@ -131,6 +131,8 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('title', 'pages', 'uid=' . $row['page']);
 			$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_page';
 			$listURL .= '&nbPerPage=' . $this->nbElementsPerPage;
+			$pointer = t3lib_div::_GP('pointer');
+			$listURL .= ($pointer !== null) ? '&pointer=' . $pointer : '';
 			$this->content .= '<a href="' . $listURL . '"><img src="/typo3/sysext/t3skin/images/icons/actions/view-go-back.png"/>&nbsp;&nbsp;&nbsp;' . $GLOBALS['LANG']->getLL('back') . '</a>';
 			$this->content .= $this->formatAResult($row, $query['FROM'], $GLOBALS['LANG']->getLL('title')) . '<br/>';
 			$this->content .= $row['logts'];
@@ -227,6 +229,8 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 
 		$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_page';
 		$listURL .= '&nbPerPage=' . $this->nbElementsPerPage;
+		$pointer = t3lib_div::_GP('pointer');
+		$listURL .= ($pointer !== null) ? '&pointer=' . $pointer : '';
 
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$content .= '<tr class="db_list_normal">';

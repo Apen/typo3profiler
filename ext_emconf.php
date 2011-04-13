@@ -3,7 +3,7 @@
 /***************************************************************
  * Extension Manager/Repository config file for ext "typo3profiler".
  *
- * Auto generated 06-12-2015 16:36
+ * Auto generated 06-12-2015 16:37
  *
  * Manual updates:
  * Only the data in the array - everything else is removed by next
@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array (
 	'description' => 'TYPO3 profiler store the slowest queries and parsetimes of page generation. It can help you to optimize your website performance.',
 	'category' => 'module',
 	'shy' => 0,
-	'version' => '1.0.4',
+	'version' => '1.0.5',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
