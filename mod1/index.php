@@ -72,7 +72,6 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 		// Draw the header.
 		$this->doc = t3lib_div::makeInstance('bigDoc');
-		$this->doc->styleSheetFile2 = '../typo3conf/ext/typo3profiler/lib/module.css';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form = '<form action="" method="post" enctype="multipart/form-data">';
 		// JavaScript
