@@ -5,10 +5,13 @@ enabled = 1
 includeTypes = SELECT
 
 # cat=basic; type=text; label= Tables to exclude when profiling:comma serapated list + wildcards, Tables in this list will always be ignored. Leave empty to profile all tables
-excludeTables = cache_%,sys_%,tx_devlog,%session%
+excludeTables = cache_%,sys_%,tx_devlog,%session%,cachingframework_%
 
 # cat=basic; type=text; label= Queries to log on each page: Will only log N slowest queries, defaults to 5 if empty
 nbQueries = 5
 
 # cat=basic; type=text; label= Total queries to log: Dynamically flush the fastest queries, defaults to 100 if empty
 maxQueries = 100
+
+# cat=basic; type=boolean; label= Enable the php debug bar for the frontend
+debugbarenabled = 0
