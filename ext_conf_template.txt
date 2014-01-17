@@ -5,7 +5,10 @@ enabled = 1
 includeTypes = SELECT
 
 # cat=basic; type=text; label= Tables to exclude when profiling:comma serapated list + wildcards, Tables in this list will always be ignored. Leave empty to profile all tables
-excludeTables = cache_%,sys_%,tx_devlog,%session%,cachingframework_%
+excludeTables = cache_%,tx_devlog,%session%,cachingframework_%,pages,tx_realurl%,tt_content,tx_templavoila%,sys_template,sys_domain,tx_extbase_cache_object,tx_extbase_cache_reflection
+
+# cat=basic; type=text; label= Regexp exclude when profiling:Leave empty to profile all tables
+excludeRegexp = /(@@SESSION|@@VERSION)/
 
 # cat=basic; type=text; label= Queries to log on each page: Will only log N slowest queries, defaults to 5 if empty
 nbQueries = 5

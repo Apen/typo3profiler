@@ -86,6 +86,10 @@ class ux_t3lib_db extends t3lib_db {
 	}
 
 	public function isProfiling($query, $type) {
+		// dont log be queries
+		if (TYPO3_MODE == 'BE') {
+			return FALSE;
+		}
 		// not authorized type
 		if (!in_array($type, $GLOBALS['TYPO3_DB']->mysqlprofilerConf['includeTypes'])) {
 			return FALSE;
@@ -93,14 +97,17 @@ class ux_t3lib_db extends t3lib_db {
 		// not authorized table
 		if (is_array($GLOBALS['TYPO3_DB']->mysqlprofilerConf['excludeTables'])) {
 			foreach ($GLOBALS['TYPO3_DB']->mysqlprofilerConf['excludeTables'] as $excludeTable) {
+				//t3lib_div::debug($query,$excludeTable);
 				if (stripos($query, $excludeTable) !== FALSE) {
 					return FALSE;
 				}
 			}
 		}
-		// dont log be queries
-		if (TYPO3_MODE == 'BE') {
-			return FALSE;
+		// not authorized regexp
+		if (!empty($GLOBALS['TYPO3_DB']->mysqlprofilerConf['excludeRegexp'])) {
+			if (preg_match($GLOBALS['TYPO3_DB']->mysqlprofilerConf['excludeRegexp'], $query, $matches) > 0) {
+				return FALSE;
+			}
 		}
 		return TRUE;
 	}
@@ -185,13 +192,13 @@ class ux_t3lib_db extends t3lib_db {
 		$GLOBALS['TYPO3_DB']->exec_INSERTQuery(
 			'tx_typo3profiler_sql',
 			array(
-			     'pid'       => 0,
-			     'type'      => $data['type'],
-			     'query'     => $data['query'],
-			     'time'      => $data['time'],
-			     'backtrace' => 'file ' . $data['backtrace']['file'] . ' @ line ' . $data['backtrace']['line'] . ' : function ' . $data['backtrace']['function'],
-			     'typo3mode' => $data['typo3mode'],
-			     'page'      => $data['page'],
+				'pid'       => 0,
+				'type'      => $data['type'],
+				'query'     => $data['query'],
+				'time'      => $data['time'],
+				'backtrace' => 'file ' . $data['backtrace']['file'] . ' @ line ' . $data['backtrace']['line'] . ' : function ' . $data['backtrace']['function'],
+				'typo3mode' => $data['typo3mode'],
+				'page'      => $data['page'],
 			)
 		);
 	}
