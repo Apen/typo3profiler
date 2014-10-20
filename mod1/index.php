@@ -24,7 +24,11 @@
  ***************************************************************/
 
 $LANG->includeLLFile('EXT:typo3profiler/mod1/locallang.xml');
-require_once(PATH_t3lib . 'class.t3lib_scbase.php');
+
+ if (version_compare(TYPO3_version, '6.2.0', '<')) {
+	require_once(PATH_t3lib . 'class.t3lib_scbase.php');
+}
+
 $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the users has no permission for entry.
 
 class tx_typo3profiler_module1 extends t3lib_SCbase
@@ -85,10 +89,16 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 
 		$this->content .= $this->doc->startPage($LANG->getLL('title'));
 
-		$this->content .= '<table width="100%"><tr><td class="functitle" width="50%">' . $LANG->getLL('choose'
-		) . '</td><td align="right" width="50%"><input type="button" onclick="jumpToUrl(\'' . t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR'
-		) . 'mod.php?M=txtypo3profilerM1_page&flush=true\');" value="' . $GLOBALS['LANG']->getLL('flush') . '"/></td></tr></table>';
-
+			if (version_compare(TYPO3_version, '6.2.0', '>=')) {
+			$this->content .= '<table width="100%"><tr><td class="functitle" width="50%">' . $LANG->getLL('choose'
+			) . '</td><td align="right" width="50%"><input type="button" onclick="jumpToUrl(\'' . t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR'
+			) . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('txtypo3profilerM1_page') . '&flush=true\');" value="' . $GLOBALS['LANG']->getLL('flush') . '"/></td></tr></table>'; 
+		} else {
+			$this->content .= '<table width="100%"><tr><td class="functitle" width="50%">' . $LANG->getLL('choose'
+			) . '</td><td align="right" width="50%"><input type="button" onclick="jumpToUrl(\'' . t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR'
+			) . 'mod.php?M=txtypo3profilerM1_page&flush=true\');" value="' . $GLOBALS['LANG']->getLL('flush') . '"/></td></tr></table>';
+		}
+		
 		$this->content .= $this->doc->divider(5);
 		$this->moduleContent();
 	}
@@ -121,6 +131,9 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('title', 'pages', 'uid=' . $row['page']);
 			$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_page';
+			if (version_compare(TYPO3_version, '6.2.0', '>=')) {
+				$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('txtypo3profilerM1_page');
+			}
 			$listURL .= '&nbPerPage=' . $this->nbElementsPerPage;
 			$pointer = t3lib_div::_GP('pointer');
 			$listURL .= ($pointer !== NULL) ? '&pointer=' . $pointer : '';
@@ -160,7 +173,6 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($query);
 			$content = $pageBrowser;
 			$content .= $this->formatAllResults($result, $query['FROM'], $GLOBALS['LANG']->getLL('title'));
-			$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		}
 
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -216,10 +228,15 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 		$content .= '</tr>';
 
 		$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_page';
+		
+		 if (version_compare(TYPO3_version, '6.2.0', '>=')) {
+			$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('txtypo3profilerM1_page');
+		 }
+		
 		$listURL .= '&nbPerPage=' . $this->nbElementsPerPage;
 		$pointer = t3lib_div::_GP('pointer');
 		$listURL .= ($pointer !== NULL) ? '&pointer=' . $pointer : '';
-
+ 
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$content .= '<tr class="db_list_normal">';
 			$content .= '<td class="cell">' . $row['page'] . '</td>';
@@ -254,6 +271,12 @@ class tx_typo3profiler_module1 extends t3lib_SCbase
 		$first = $previous = $next = $last = $reload = '';
 		$listURLOrig = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_page';
 		$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'mod.php?M=txtypo3profilerM1_page';
+		
+		if (version_compare(TYPO3_version, '6.2.0', '>=')) {
+			$listURLOrig = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('txtypo3profilerM1_page');
+			$listURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('txtypo3profilerM1_page');
+		}
+		
 		$listURL .= '&nbPerPage=' . $this->nbElementsPerPage;
 		$currentPage = floor(($firstElementNumber + 1) / $iLimit) + 1;
 		// First

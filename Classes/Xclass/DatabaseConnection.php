@@ -175,7 +175,7 @@ class Typo3profiler_Xclass_DatabaseConnection extends \TYPO3\CMS\Core\Database\D
 			return NULL;
 		}
 		$nbQueries = count($datas);
-		usort($datas, array('ux_t3lib_db', 'sortByDuration'));
+		usort($datas, array('Typo3profiler_Xclass_DatabaseConnection', 'sortByDuration'));
 		$datas = array_slice($datas, 0, $GLOBALS['TYPO3_DB']->mysqlprofilerConf['nbQueries']);
 		$this->cleanSqlLog();
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_typo3profiler_sql', 'page=' . intval($GLOBALS['TSFE']->id));
