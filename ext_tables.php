@@ -1,45 +1,54 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
+    die ('Access denied.');
 }
-$TCA['tx_typo3profiler_sql'] = array(
-	'ctrl' => array(
-		'title'             => 'LLL:EXT:typo3profiler/locallang_db.xml:tx_typo3profiler_sql',
-		'label'             => 'uid',
-		'tstamp'            => 'tstamp',
-		'crdate'            => 'crdate',
-		'cruser_id'         => 'cruser_id',
-		'default_sortby'    => 'ORDER BY crdate',
-		'delete'            => 'deleted',
-		'enablecolumns'     => array(
-			'disabled' => 'hidden',
-		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY) . 'icon_tx_typo3profiler_sql.gif',
-	),
-);
-
-$TCA['tx_typo3profiler_page'] = array(
-	'ctrl' => array(
-		'title'             => 'LLL:EXT:typo3profiler/locallang_db.xml:tx_typo3profiler_page',
-		'label'             => 'uid',
-		'tstamp'            => 'tstamp',
-		'crdate'            => 'crdate',
-		'cruser_id'         => 'cruser_id',
-		'default_sortby'    => 'ORDER BY crdate',
-		'delete'            => 'deleted',
-		'enablecolumns'     => array(
-			'disabled' => 'hidden',
-		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY) . 'icon_tx_typo3profiler_page.gif',
-	),
-);
 
 if (TYPO3_MODE == 'BE') {
-	t3lib_extMgm::addModule('txtypo3profilerM1', '', '', t3lib_extMgm::extPath($_EXTKEY) . 'modmain/');
-	t3lib_extMgm::addModule('txtypo3profilerM1', 'page', '', t3lib_extMgm::extPath($_EXTKEY) . 'mod1/');
-	t3lib_extMgm::addModule('txtypo3profilerM1', 'sql', '', t3lib_extMgm::extPath($_EXTKEY) . 'mod2/');
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'Sng.' . $_EXTKEY,
+        'txtypo3profilerM1',
+        '',
+        '',
+        array(),
+        array(
+            'access' => 'user,group',
+            'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xml:typo3profilertitle',
+        )
+    );
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'Sng.' . $_EXTKEY,
+        'txtypo3profilerM1',
+        'mod1',
+        '',
+        array(
+            'Page' => 'index,show,flush',
+        ),
+        array(
+            'access' => 'user,group',
+            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/page.gif',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xml:modpage',
+        )
+    );
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'Sng.' . $_EXTKEY,
+        'txtypo3profilerM1',
+        'mod2',
+        '',
+        array(
+            'Sql' => 'index,show,flush',
+        ),
+        array(
+            'access' => 'user,group',
+            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/sql.gif',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xml:modsql',
+        )
+    );
+
+    //\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', $_EXTKEY);
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:typo3profiler/Configuration/TypoScript/setup.txt">');
 }
 
 ?>

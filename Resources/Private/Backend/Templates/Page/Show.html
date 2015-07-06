@@ -1,0 +1,66 @@
+{namespace t3prof=Tx_Typo3profiler_ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="iconButtons">
+    <f:link.action action="index">
+        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:back"/>
+        <t3prof:spriteManagerIcon iconName="actions-document-close"/>
+    </f:link.action>
+</f:section>
+
+<f:section name="headline">
+    <h1>
+        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:modpagetitle"/>
+    </h1>
+</f:section>
+
+<f:section name="content">
+    <div class="table-fit">
+        <table class="typo3-dblist table table-hover">
+            <thead>
+            <tr class="t3-row-header">
+                <th>
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:pageuid"/>
+                </th>
+                <th class="col-title">
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:pagetitle"/>
+                </th>
+                <th>
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:parsetime"/>
+                </th>
+                <th>
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:size"/>
+                </th>
+                <th>
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:nocache"/>
+                </th>
+                <th>
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:userint"/>
+                </th>
+                <th>
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:queries"/>
+                </th>
+                <th class="col-control"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="db_list_normal">
+                <td>{item.pageuid}</td>
+                <td>{item.pagetitle}</td>
+                <td>{item.parsetime}</td>
+                <td>{item.size}</td>
+                <td>{item.nocache}</td>
+                <td>{item.userint}</td>
+                <td>{item.nbqueries}</td>
+                <td class="col-control">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <f:format.raw>
+        {item.logts}
+    </f:format.raw>
+</f:section>

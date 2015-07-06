@@ -1,0 +1,11 @@
+# Module configuration
+module.tx_typo3profiler {
+	view {
+		templateRootPath = EXT:typo3profiler/Resources/Private/Backend/Templates/
+        partialRootPath = EXT:typo3profiler/Resources/Private/Backend/Partials/
+        layoutRootPath = EXT:typo3profiler/Resources/Private/Backend/Layouts/
+        templateRootPaths.10 = EXT:typo3profiler/Resources/Private/Backend/Templates/
+        partialRootPaths.10 = EXT:typo3profiler/Resources/Private/Backend/Partials/
+        layoutRootPaths.10 = EXT:typo3profiler/Resources/Private/Backend/Layouts/
+	}
+}

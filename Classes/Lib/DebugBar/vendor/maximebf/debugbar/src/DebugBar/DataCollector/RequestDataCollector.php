@@ -15,9 +15,6 @@ namespace DebugBar\DataCollector;
  */
 class RequestDataCollector extends DataCollector implements Renderable
 {
-    /**
-     * {@inheritDoc}
-     */
     public function collect()
     {
         $vars = array('_GET', '_POST', '_SESSION', '_COOKIE', '_SERVER');
@@ -25,28 +22,23 @@ class RequestDataCollector extends DataCollector implements Renderable
 
         foreach ($vars as $var) {
             if (isset($GLOBALS[$var])) {
-                $data["$" . $var] = $this->formatVar($GLOBALS[$var]);
+                $data["$" . $var] = $this->getDataFormatter()->formatVar($GLOBALS[$var]);
             }
         }
 
         return $data;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return 'request';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets()
     {
         return array(
             "request" => array(
+                "icon" => "tags",
                 "widget" => "PhpDebugBar.Widgets.VariableListWidget",
                 "map" => "request",
                 "default" => "{}"

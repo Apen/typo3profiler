@@ -23,7 +23,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class user_typo3profiler implements tslib_content_PostInitHook {
+class user_typo3profiler implements \TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface {
 	public function contentPostProc($_funcRef, $_params) {
 		$nbQueries = $GLOBALS['TYPO3_DB']->profiling();
 		$conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['typo3profiler']);
@@ -37,7 +37,7 @@ class user_typo3profiler implements tslib_content_PostInitHook {
 			     'parsetime' => $GLOBALS['TSFE']->scriptParseTime,
 			     'page'      => $GLOBALS['TSFE']->id,
 			     'logts'     => $logTS,
-			     'size'      => t3lib_div::formatSize(strlen($GLOBALS['TSFE']->content)),
+			     'size'      => \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(strlen($GLOBALS['TSFE']->content)),
 			     'nocache'   => $GLOBALS['TSFE']->no_cache ? 1 : 0,
 			     'userint'   => count($GLOBALS['TSFE']->config['INTincScript']),
 			     'nbqueries' => $nbQueries,
@@ -48,7 +48,7 @@ class user_typo3profiler implements tslib_content_PostInitHook {
 		}
 	}
 
-	public function postProcessContentObjectInitialization(tslib_cObj &$parentObject) {
+	public function postProcessContentObjectInitialization(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject) {
 		$GLOBALS['TT']->LR = 1;
 		$GLOBALS['TSFE']->forceTemplateParsing;
 		$GLOBALS['TT']->printConf['flag_tree'] = 1;

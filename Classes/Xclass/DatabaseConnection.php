@@ -70,14 +70,14 @@ class Typo3profiler_Xclass_DatabaseConnection extends \TYPO3\CMS\Core\Database\D
 
 	public function init() {
 		$GLOBALS['TYPO3_DB']->mysqlprofilerConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['typo3profiler']);
-		$GLOBALS['TYPO3_DB']->mysqlprofilerConf['includeTypes'] = ($GLOBALS['TYPO3_DB']->mysqlprofilerConf['includeTypes'] != '') ? t3lib_div::trimExplode(',',
+		$GLOBALS['TYPO3_DB']->mysqlprofilerConf['includeTypes'] = ($GLOBALS['TYPO3_DB']->mysqlprofilerConf['includeTypes'] != '') ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',',
 		                                                                                                                                                   $GLOBALS['TYPO3_DB']->mysqlprofilerConf['includeTypes']
 		) : array('SELECT');
 		$GLOBALS['TYPO3_DB']->mysqlprofilerConf['nbQueries'] = ($GLOBALS['TYPO3_DB']->mysqlprofilerConf['nbQueries'] != '') ? intval($GLOBALS['TYPO3_DB']->mysqlprofilerConf['nbQueries']) : 5;
 		$GLOBALS['TYPO3_DB']->mysqlprofilerConf['maxQueries'] = ($GLOBALS['TYPO3_DB']->mysqlprofilerConf['maxQueries'] != '') ? intval($GLOBALS['TYPO3_DB']->mysqlprofilerConf['maxQueries']) : 100;
 		if ($GLOBALS['TYPO3_DB']->mysqlprofilerConf['excludeTables'] != '') {
 			$excludeTables = array();
-			$ets = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_DB']->mysqlprofilerConf['excludeTables']);
+			$ets = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_DB']->mysqlprofilerConf['excludeTables']);
 			foreach ($ets as $et) {
 				$resEt = $GLOBALS['TYPO3_DB']->sql_query('SHOW TABLES LIKE "' . $et . '"');
 				while ($rowEt = $GLOBALS['TYPO3_DB']->sql_fetch_row($resEt)) {
@@ -153,7 +153,7 @@ class Typo3profiler_Xclass_DatabaseConnection extends \TYPO3\CMS\Core\Database\D
 			);
 
 			if ($GLOBALS['TYPO3_DB']->mysqlprofilerConf['debugbarenabled'] == 1) {
-				if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
 					$GLOBALS['debugbar']['queries']->info('[' . $deltatime . '] ' . $query . ' --> ' . $debugFunc['file'] . ' @ ' . $debugFunc['line'] . ' : ' . $debugFunc['function']);
 				}
 			}

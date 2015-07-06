@@ -1,0 +1,103 @@
+{namespace t3prof=Tx_Typo3profiler_ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="iconButtons">
+    <f:link.action action="index">
+        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:back"/>
+        <t3prof:spriteManagerIcon iconName="actions-document-close"/>
+    </f:link.action>
+</f:section>
+
+<f:section name="headline">
+    <h1>
+        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:modsqltitle"/>
+    </h1>
+</f:section>
+
+<f:section name="content">
+    <div class="table-fit">
+        <table class="typo3-dblist table table-hover">
+            <thead>
+            <tr class="t3-row-header">
+                <th>
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:type"/>
+                </th>
+                <th>
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:parsetime"/>
+                </th>
+                <th>
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:pageuid"/>
+                </th>
+                <th>
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:typo3mode"/>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{item.type}</td>
+                <td>{item.time}</td>
+                <td>{item.page}</td>
+                <td>{item.typo3mode}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="table-fit">
+        <table class="typo3-dblist table table-hover">
+            <thead>
+            <tr class="t3-row-header">
+                <th class="col-title">
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:query"/>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{item.query}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="table-fit">
+        <table class="typo3-dblist table table-hover">
+            <thead>
+            <tr class="t3-row-header">
+                <th class="col-title">
+                    <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:call"/>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{item.backtrace}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="table-fit">
+        <table class="typo3-dblist table table-hover">
+            <thead>
+            <tr class="t3-row-header">
+                <f:for each="{explainHeader}" as="itemExplain">
+                    <th>
+                        {itemExplain}
+                    </th>
+                </f:for>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <f:for each="{explain}" as="itemExplain">
+                    <f:for each="{itemExplain}" as="colValue">
+                        <td>
+                            {colValue}
+                        </td>
+                    </f:for>
+                </f:for>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</f:section>

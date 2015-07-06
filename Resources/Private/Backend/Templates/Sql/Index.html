@@ -1,0 +1,66 @@
+{namespace t3prof=Tx_Typo3profiler_ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="iconButtons">
+    <f:link.action action="flush">
+        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:flush"/>
+        <t3prof:spriteManagerIcon iconName="actions-edit-delete"/>
+    </f:link.action>
+</f:section>
+
+<f:section name="headline">
+    <h1>
+        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:modsqltitle"/>
+    </h1>
+</f:section>
+
+<f:section name="content">
+
+    <t3prof:widget.paginateQuery query="{query}" as="paginatedItems" configuration="{itemsPerPage: 20, insertAbove: 1, insertBelow: 1, pagesAfter: 1, pagesBefore: 1, forceFirstPrevNextlast: 1}">
+        <div class="table-fit">
+            <table class="typo3-dblist table table-hover">
+                <thead>
+                <tr class="t3-row-header">
+                    <th>
+                        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:type"/>
+                    </th>
+                    <th class="col-title">
+                        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:query"/>
+                    </th>
+                    <th>
+                        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:parsetime"/>
+                    </th>
+                    <th>
+                        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:call"/>
+                    </th>
+                    <th>
+                        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:pageuid"/>
+                    </th>
+                    <th>
+                        <f:translate key="LLL:EXT:typo3profiler/Resources/Private/Language/locallang.xml:typo3mode"/>
+                    </th>
+                    <th class="col-control"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{paginatedItems}" as="item">
+                    <tr class="db_list_normal">
+                        <td>{item.type}</td>
+                        <td><f:format.crop maxCharacters="80" respectWordBoundaries="false">{item.query}</f:format.crop></td>
+                        <td>{item.time}</td>
+                        <td><f:format.crop maxCharacters="80" respectWordBoundaries="false">{item.backtrace}</f:format.crop></td>
+                        <td>{item.page}</td>
+                        <td>{item.typo3mode}</td>
+                        <td class="col-control">
+                            <f:link.action action="show" arguments="{uid: item.uid}" class="btn btn-default">
+                                <t3prof:spriteManagerIcon iconName="actions-document-info"/>
+                            </f:link.action>
+                        </td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
+    </t3prof:widget.paginateQuery>
+</f:section>

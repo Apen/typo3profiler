@@ -44,7 +44,7 @@ class Typo3profiler_Utility_Debugbar {
 	 * Init the debug bar
 	 */
 	public static function init() {
-		if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
 			require_once(PATH_typo3conf . 'ext/typo3profiler/Classes/Lib/DebugBar/vendor/autoload.php');
 			$GLOBALS['debugbar'] = new DebugBar();
 			$GLOBALS['debugbar']->addCollector(new RequestDataCollector());
@@ -60,7 +60,7 @@ class Typo3profiler_Utility_Debugbar {
 	 * Render the debug bar
 	 */
 	public static function render() {
-		if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
 			$debugbarRenderer = $GLOBALS['debugbar']->getJavascriptRenderer();
 			$debugbarRenderer->setBaseUrl('typo3conf/ext/typo3profiler/Classes/Lib/DebugBar/vendor/maximebf/debugbar/src/DebugBar/Resources')->setEnableJqueryNoConflict(FALSE);
 			self::renderPhp();
@@ -108,7 +108,7 @@ class Typo3profiler_Utility_Debugbar {
 	}
 
 	public static function renderContents() {
-		/*$apiObj = t3lib_div::makeInstance('tx_templavoila_api', 'pages');
+		/*$apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api', 'pages');
 		$rootElementRecord = t3lib_BEfunc::getRecordWSOL('pages', $GLOBALS['TSFE']->id, '*');
 		$contentTreeData = $apiObj->getContentTree('pages', $rootElementRecord);
 		$usedUids = array_keys($contentTreeData['contentElementUsage']);
