@@ -1,6 +1,6 @@
 <?php
 
-$extensionPath = t3lib_extMgm::extPath('typo3profiler');
+$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('typo3profiler');
 
 return array(
     'Tx_Typo3profiler_ViewHelpers_Widget_PaginateQueryViewHelper' => $extensionPath . 'Classes/ViewHelpers/Widget/PaginateQueryViewHelper.php',

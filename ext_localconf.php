@@ -2,7 +2,7 @@
 
 if (!defined('TYPO3_MODE')) die ('Access denied.');
 
-$extensionPath = t3lib_extMgm::extPath('typo3profiler');
+$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('typo3profiler');
 require_once($extensionPath . 'Classes/Utility/Compatibility.php');
 require_once($extensionPath . 'Classes/Utility/Debugbar.php');
 
