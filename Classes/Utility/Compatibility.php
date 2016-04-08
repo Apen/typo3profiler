@@ -41,7 +41,7 @@ class Typo3profiler_Utility_Compatibility {
 	 * @param    string $verNumberStr number on format x.x.x
 	 * @return   integer   Integer version of version number (where each part can count to 999)
 	 */
-	public function intFromVer($verNumberStr) {
+	public static function intFromVer($verNumberStr) {
 		$verParts = explode('.', $verNumberStr);
 		return intval((int)$verParts[0] . str_pad((int)$verParts[1], 3, '0', STR_PAD_LEFT) . str_pad((int)$verParts[2], 3, '0', STR_PAD_LEFT));
 	}
