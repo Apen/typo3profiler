@@ -1,4 +1,7 @@
 <?php
+
+namespace Sng\Typo3profiler\ViewHelpers\Widget;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -38,20 +41,20 @@
  * @package    TYPO3
  * @subpackage typo3profiler
  */
-class Tx_Typo3profiler_ViewHelpers_Widget_PaginateQueryViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper {
+class PaginateQueryViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper {
 
     /**
-     * @var Tx_Typo3profiler_ViewHelpers_Widget_Controller_PaginateQueryController
+     * @var \Sng\Typo3profiler\ViewHelpers\Widget\Controller\PaginateQueryController
      */
     protected $controller;
 
     /**
      * Inject controller
      *
-     * @param Tx_Typo3profiler_ViewHelpers_Widget_Controller_PaginateQueryController $controller
+     * @param \Sng\Typo3profiler\ViewHelpers\Widget\Controller\PaginateQueryController $controller
      * @return void
      */
-    public function injectController(Tx_Typo3profiler_ViewHelpers_Widget_Controller_PaginateQueryController $controller) {
+    public function injectController(\Sng\Typo3profiler\ViewHelpers\Widget\Controller\PaginateQueryController $controller) {
         $this->controller = $controller;
     }
 
