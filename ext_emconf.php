@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = array (
   'title' => 'TYPO3 profiler',
   'description' => 'TYPO3 profiler store the slowest queries and parsetimes of page generation. It can help you to optimize your website performance.',
   'category' => 'module',
-  'version' => '1.3.2',
+  'version' => '1.3.3',
   'state' => 'stable',
   'uploadfolder' => false,
   'createDirs' => '',
@@ -26,7 +26,7 @@ $EM_CONF[$_EXTKEY] = array (
   array (
     'depends' => 
     array (
-      'php' => '5.0.0-5.6.99',
+      'php' => '5.3.7-7.0.99',
       'typo3' => '6.2.0-7.6.99',
     ),
     'conflicts' => 

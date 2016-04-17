@@ -1,4 +1,7 @@
 <?php
+
+namespace Sng\Typo3profiler\ViewHelpers\Widget\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +32,7 @@
  * @package    TYPO3
  * @subpackage typo3profiler
  */
-class Tx_Typo3profiler_ViewHelpers_Widget_Controller_PaginateQueryController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
+class PaginateQueryController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
 
     /**
      * @var array

@@ -1,0 +1,43 @@
+{
+    "name": "apen/typo3profiler",
+    "type": "typo3-cms-extension",
+    "description": "TYPO3 profiler store the slowest queries and parsetimes of page generation. It can help you to optimize your website performance.",
+    "keywords": [
+        "TYPO3",
+        "profiler"
+    ],
+    "authors": [
+        {
+            "name": "Yohann Cerdan",
+            "email": "cerdanyohann@yahoo.fr",
+            "role": "Developer",
+            "homepage": "www.site-ngo.fr"
+        }
+    ],
+    "license": "GPL-2.0+",
+    "require": {
+        "typo3/cms-core": "^6.2|^7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sng\\Typo3profiler\\": "web/typo3conf/ext/typo3profiler/Classes/"
+        }
+    },
+    "replace": {
+        "typo3profiler": "self.version",
+        "typo3-ter/typo3profiler": "self.version"
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin"
+    },
+    "extra": {
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/Web",
+            "Package": {
+                "partOfMinimalUsableSystem": true
+            }
+        }
+    }
+}
