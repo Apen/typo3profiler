@@ -1,5 +1,7 @@
 <?php
 
+namespace Sng\Typo3profiler\ViewHelpers;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -24,7 +26,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
-class Tx_Typo3profiler_ViewHelpers_SpriteManagerIconViewHelper extends AbstractViewHelper implements CompilableInterface {
+class SpriteManagerIconViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Prints sprite icon html for $iconName key
