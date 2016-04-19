@@ -41,7 +41,8 @@ namespace Sng\Typo3profiler\ViewHelpers\Widget;
  * @package    TYPO3
  * @subpackage typo3profiler
  */
-class PaginateQueryViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper {
+class PaginateQueryViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
+{
 
     /**
      * @var \Sng\Typo3profiler\ViewHelpers\Widget\Controller\PaginateQueryController
@@ -54,7 +55,8 @@ class PaginateQueryViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidge
      * @param \Sng\Typo3profiler\ViewHelpers\Widget\Controller\PaginateQueryController $controller
      * @return void
      */
-    public function injectController(\Sng\Typo3profiler\ViewHelpers\Widget\Controller\PaginateQueryController $controller) {
+    public function injectController(\Sng\Typo3profiler\ViewHelpers\Widget\Controller\PaginateQueryController $controller)
+    {
         $this->controller = $controller;
     }
 
@@ -66,7 +68,8 @@ class PaginateQueryViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidge
      * @param mixed  $configuration
      * @return string
      */
-    public function render($query, $as, $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE)) {
+    public function render($query, $as, $configuration = array('itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true))
+    {
         return $this->initiateSubRequest();
     }
 }

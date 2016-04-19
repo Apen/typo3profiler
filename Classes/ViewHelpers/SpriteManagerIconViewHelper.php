@@ -26,38 +26,41 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
-class SpriteManagerIconViewHelper extends AbstractViewHelper implements CompilableInterface {
+class SpriteManagerIconViewHelper extends AbstractViewHelper implements CompilableInterface
+{
 
-	/**
-	 * Prints sprite icon html for $iconName key
-	 *
-	 * @param string $iconName
-	 * @param array $options
-	 * @return string
-	 */
-	public function render($iconName, $options = array()) {
-		return static::renderStatic(
-			array(
-				'iconName' => $iconName,
-				'options' => $options
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * Prints sprite icon html for $iconName key
+     *
+     * @param string $iconName
+     * @param array  $options
+     * @return string
+     */
+    public function render($iconName, $options = array())
+    {
+        return static::renderStatic(
+            array(
+                'iconName' => $iconName,
+                'options'  => $options
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Print sprite icon html for $iconName key
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$iconName = $arguments['iconName'];
-		$options = $arguments['options'];
-		return IconUtility::getSpriteIcon($iconName, $options);
-	}
+    /**
+     * Print sprite icon html for $iconName key
+     *
+     * @param array                     $arguments
+     * @param \Closure                  $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $iconName = $arguments['iconName'];
+        $options = $arguments['options'];
+        return IconUtility::getSpriteIcon($iconName, $options);
+    }
 
 }

@@ -32,21 +32,22 @@ namespace Sng\Typo3profiler\ViewHelpers\Widget\Controller;
  * @package    TYPO3
  * @subpackage typo3profiler
  */
-class PaginateQueryController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
+class PaginateQueryController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
+{
 
     /**
      * @var array
      */
     protected $configuration = array(
         'itemsPerPage'           => 10,
-        'insertAbove'            => FALSE,
-        'insertBelow'            => TRUE,
+        'insertAbove'            => false,
+        'insertBelow'            => true,
         'pagesAfter'             => 3,
         'pagesBefore'            => 3,
-        'lessPages'              => TRUE,
+        'lessPages'              => true,
         'forcedNumberOfLinks'    => 5,
-        'forceFirstPrevNextlast' => FALSE,
-        'showFirstLast'          => TRUE
+        'forceFirstPrevNextlast' => false,
+        'showFirstLast'          => true
     );
 
     /**
@@ -58,7 +59,6 @@ class PaginateQueryController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidge
      * @var integer
      */
     protected $numberOfItems;
-
 
     /**
      * @var integer
@@ -78,7 +78,7 @@ class PaginateQueryController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidge
     /**
      * @var boolean
      */
-    protected $lessPages = FALSE;
+    protected $lessPages = false;
 
     /**
      * @var integer
@@ -95,13 +95,14 @@ class PaginateQueryController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidge
      *
      * @return void
      */
-    public function initializeAction() {
+    public function initializeAction()
+    {
         $this->query = $this->widgetConfiguration['query'];
 
         \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
             $this->configuration,
             (array)$this->widgetConfiguration['configuration'],
-            TRUE
+            true
         );
 
         if (empty($this->configuration['itemsPerPage'])) {
@@ -125,7 +126,8 @@ class PaginateQueryController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidge
      *
      * @return void
      */
-    protected function adjustForForcedNumberOfLinks() {
+    protected function adjustForForcedNumberOfLinks()
+    {
         $forcedNumberOfLinks = $this->forcedNumberOfLinks;
         if ($forcedNumberOfLinks > $this->numberOfPages) {
             $forcedNumberOfLinks = $this->numberOfPages;
@@ -155,7 +157,8 @@ class PaginateQueryController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidge
      * @param integer $currentPage
      * @return void
      */
-    public function indexAction($currentPage = 1) {
+    public function indexAction($currentPage = 1)
+    {
         // ugly patch to work without extbase (sry for that)
         $widgetIdentifier = '@widget_0';
 
@@ -197,7 +200,8 @@ class PaginateQueryController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidge
      *
      * @return array
      */
-    public function buildPagination() {
+    public function buildPagination()
+    {
         $this->adjustForForcedNumberOfLinks();
 
         $pages = array();
@@ -231,12 +235,12 @@ class PaginateQueryController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidge
 
         // less pages (before current)
         if ($start > 0 && $this->lessPages) {
-            $pagination['lessPages'] = TRUE;
+            $pagination['lessPages'] = true;
         }
 
         // next pages (after current)
         if ($end != $this->numberOfPages && $this->lessPages) {
-            $pagination['morePages'] = TRUE;
+            $pagination['morePages'] = true;
         }
 
         return $pagination;

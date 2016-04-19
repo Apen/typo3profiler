@@ -25,15 +25,18 @@ namespace Sng\Typo3profiler\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class SqlController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
+class SqlController extends ActionController
+{
 
     /**
      * action index
      *
      * @return void
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $query = array();
         $query['SELECT'] = 'uid,type,query,time,backtrace,page,typo3mode';
         $query['FROM'] = 'tx_typo3profiler_sql';
@@ -51,20 +54,22 @@ class SqlController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
      *
      * @return void
      */
-    public function showAction($uid) {
+    public function showAction($uid)
+    {
         $query['SELECT'] = 'type,query,time,backtrace,page,typo3mode';
         $query['FROM'] = 'tx_typo3profiler_sql';
         $query['WHERE'] = 'uid=' . intval($uid);
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($query);
-        $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
-        $res = $GLOBALS['TYPO3_DB']->sql_query('EXPLAIN ' . $row['query']);
+        $res = $this->getDatabaseConnection()->exec_SELECT_queryArray($query);
+        $row = $this->getDatabaseConnection()->sql_fetch_assoc($res);
+        $this->getDatabaseConnection()->sql_free_result($res);
+        $res = $this->getDatabaseConnection()->sql_query('EXPLAIN ' . $row['query']);
         $explain = array();
-        while ($rowExplain = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        $explainHeader = array();
+        while ($rowExplain = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
             $explain[] = $rowExplain;
             $explainHeader = array_keys($rowExplain);
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
+        $this->getDatabaseConnection()->sql_free_result($res);
         $this->view->assign('item', $row);
         $this->view->assign('explain', $explain);
         $this->view->assign('explainHeader', $explainHeader);
@@ -75,8 +80,17 @@ class SqlController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
      *
      * @return void
      */
-    public function flushAction() {
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_typo3profiler_sql', '');
+    public function flushAction()
+    {
+        $this->getDatabaseConnection()->exec_DELETEquery('tx_typo3profiler_sql', '');
         $this->redirect('index');
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }
