@@ -49,6 +49,9 @@ class user_typo3profiler implements \TYPO3\CMS\Frontend\ContentObject\ContentObj
 	}
 
 	public function postProcessContentObjectInitialization(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject) {
+		if (TYPO3_MODE == 'BE') {
+			return null;
+		}
 		$GLOBALS['TT']->LR = 1;
 		$GLOBALS['TSFE']->forceTemplateParsing;
 		$GLOBALS['TT']->printConf['flag_tree'] = 1;

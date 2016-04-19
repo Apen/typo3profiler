@@ -51,6 +51,9 @@ class PageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
      * @return void
      */
     public function showAction($uid) {
+        $doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+        $pageRenderer = $doc->getPageRenderer();
+        $pageRenderer->addCssFile('/typo3/sysext/t3skin/stylesheets/standalone/admin_panel.css');
         $query['SELECT'] = 'tx_typo3profiler_page.uid,pages.uid as "pageuid",pages.title as "pagetitle",parsetime,size,nocache,userint,nbqueries,logts';
         $query['FROM'] = 'tx_typo3profiler_page,pages';
         $query['WHERE'] = 'pages.uid=tx_typo3profiler_page.page AND tx_typo3profiler_page.uid=' . intval($uid);
