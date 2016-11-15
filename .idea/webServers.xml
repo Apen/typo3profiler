@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="5e5a40ab-d4c6-470d-8fef-a7b8375e16e6" name="RewebNewDev" url="http://91.121.140.192">
+        <fileTransfer host="91.121.140.192" port="22" accessType="SFTP" password="df89dff8df99df87dffddfcfdf92dfea" username="root">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
