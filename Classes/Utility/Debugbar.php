@@ -108,10 +108,15 @@ class Typo3profiler_Utility_Debugbar
     public static function renderTyposcript()
     {
         $typoscript = array();
+        $typoScriptService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
         foreach ($GLOBALS['TSFE']->tmpl->setup as $setupKey => $setup) {
-            $GLOBALS['TSFE']->tmpl->setup[$setupKey] = str_replace(array("\n", "\r", "\r\n"), array('', '', ''), Typo3profiler_Utility_Compatibility::viewArray($setup));
+            if (is_array($setup)) {
+                $typoscript [$setupKey] = $typoScriptService->convertTypoScriptArrayToPlainArray($setup);
+            } else {
+                $typoscript [$setupKey] = $setup;
+            }
         }
-        $GLOBALS['debugbar']['typoscript']->setData(self::mdArrayMap('utf8_encode', $GLOBALS['TSFE']->tmpl->setup));
+        $GLOBALS['debugbar']['typoscript']->setData(self::mdArrayMap('utf8_encode', $typoscript));
     }
 
     public static function renderContents()

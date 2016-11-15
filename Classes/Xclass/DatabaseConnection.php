@@ -37,6 +37,7 @@ class Typo3profiler_Xclass_DatabaseConnection extends \TYPO3\CMS\Core\Database\D
 {
 
     protected $profiledQueries = array();
+    protected $profiledQueriesNb = 0;
 
     public function exec_INSERTquery($table, $fields_values, $no_quote_fields = false)
     {
@@ -94,6 +95,7 @@ class Typo3profiler_Xclass_DatabaseConnection extends \TYPO3\CMS\Core\Database\D
             }
             $GLOBALS['TYPO3_DB']->mysqlprofilerConf['excludeTables'] = $excludeTables;
         }
+        $this->profiledQueriesNb = 0;
     }
 
     public function isProfiling($query, $type)
@@ -123,6 +125,10 @@ class Typo3profiler_Xclass_DatabaseConnection extends \TYPO3\CMS\Core\Database\D
             $this->init();
         }
 
+        if (TYPO3_MODE == 'FE') {
+            $this->profiledQueriesNb++;
+        }
+
         $isProfiling = $this->isProfiling($query, $type);
 
         if ($isProfiling) {
@@ -140,7 +146,7 @@ class Typo3profiler_Xclass_DatabaseConnection extends \TYPO3\CMS\Core\Database\D
         }
 
         if ($isProfiling) {
-            $deltatime = round((microtime(true) - $begin) * 1000, 8);
+            $deltatime = round((microtime(true) - $begin) * 1000, 4);
 
             if ($GLOBALS['TSFE']->id == 0) {
                 $debugFunc = $this->get_caller_method(3);
@@ -163,7 +169,7 @@ class Typo3profiler_Xclass_DatabaseConnection extends \TYPO3\CMS\Core\Database\D
 
             if ($GLOBALS['TYPO3_DB']->mysqlprofilerConf['debugbarenabled'] == 1) {
                 if (\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
-                    $GLOBALS['debugbar']['queries']->info('[' . $deltatime . '] ' . $query . ' --> ' . $debugFunc['file'] . ' @ ' . $debugFunc['line'] . ' : ' . $debugFunc['function']);
+                    $GLOBALS['debugbar']['queries']->info('[' . $deltatime . 'ms] ' . $query . '--> ' . $debugFunc['file'] . ' @ ' . $debugFunc['line'] . ' : ' . $debugFunc['function']);
                 }
             }
 
@@ -243,6 +249,22 @@ class Typo3profiler_Xclass_DatabaseConnection extends \TYPO3\CMS\Core\Database\D
             );
         }
         return null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProfiledQueriesNb()
+    {
+        return $this->profiledQueriesNb;
+    }
+
+    /**
+     * @param int $profiledQueriesNb
+     */
+    public function setProfiledQueriesNb($profiledQueriesNb)
+    {
+        $this->profiledQueriesNb = $profiledQueriesNb;
     }
 
 }

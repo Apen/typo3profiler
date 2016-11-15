@@ -26,7 +26,7 @@ class user_typo3profiler implements \TYPO3\CMS\Frontend\ContentObject\ContentObj
 {
     public function contentPostProc($_funcRef, $_params)
     {
-        $nbQueries = $GLOBALS['TYPO3_DB']->profiling();
+        $GLOBALS['TYPO3_DB']->profiling();
         $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['typo3profiler']);
         $logTS = $GLOBALS['TT']->printTSlog();
         $logTS = preg_replace('/src="typo3/', 'src="/typo3', $logTS);
@@ -41,7 +41,7 @@ class user_typo3profiler implements \TYPO3\CMS\Frontend\ContentObject\ContentObj
                 'size'      => \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(strlen($GLOBALS['TSFE']->content)),
                 'nocache'   => $GLOBALS['TSFE']->no_cache ? 1 : 0,
                 'userint'   => count($GLOBALS['TSFE']->config['INTincScript']),
-                'nbqueries' => $nbQueries,
+                'nbqueries' => $GLOBALS['TYPO3_DB']->getProfiledQueriesNb(),
             )
         );
         if ($conf['debugbarenabled'] == 1) {
